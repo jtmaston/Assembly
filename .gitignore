@@ -1,0 +1,4 @@
+*.bin
+syscall.h
+src/assemble.sh
+output
