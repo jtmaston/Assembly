@@ -1,4 +1,10 @@
 *.bin
 syscall.h
-src/assemble.sh
+src/asm.sh
+src/dsm.sh
+src/cds.sh
 output
+documentation
+scratchpad
+disas.s
+decomp.s
