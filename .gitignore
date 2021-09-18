@@ -8,3 +8,5 @@ documentation
 scratchpad
 disas.s
 decomp.s
+.vscode
+bin
