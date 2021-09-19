@@ -1,1 +1,0 @@
-../tools/assemble_and_disassemble.sh

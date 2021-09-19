@@ -1,8 +1,8 @@
 *.bin
 syscall.h
-src/asm.sh
-src/dsm.sh
-src/cds.sh
+Code/asm.sh
+Code/dsm.sh
+Code/cds.sh
 output
 documentation
 scratchpad
