@@ -25,12 +25,14 @@ _abort:
     ret
 
 strlen:
+    sub sp, sp, #16             ; make sure stack isn't overwritten
+
     mov X5, X1                  ; save X1, so we don't have to adrp it again
     mov X9, #-1                 ; start the counter with -1, since first thing we do is increment it
 
     sub sp, sp, #48             ; allocate space for the lr and for the counter ( and one extra slot for sanity )
     str lr, [sp]                ; save the link register
-    str X9, [sp, 16]            ; write counter to memory
+    str X9, [sp, #16]            ; write counter to memory
 
     bl _calc_strlen             ; calculate the length of thr string
     
@@ -39,4 +41,6 @@ strlen:
     add sp, sp, #48             ; de-allocate memory
 
     mov X1, X5                  ; re-load X1
+
+    add sp, sp, #16
     ret
