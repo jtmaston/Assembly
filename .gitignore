@@ -10,3 +10,4 @@ disas.s
 decomp.s
 .vscode
 bin
+.DS_Store
