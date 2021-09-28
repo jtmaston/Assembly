@@ -6,7 +6,7 @@
 .text
 
 _stop:
-    pop X9
+    pop X0
     pop X1
     pop lr
     ret
@@ -23,7 +23,7 @@ _step:
     bne _step
 
 
-strlen:                         ; X1 contains pointer to our data
+strlen:                         ; X1 contains pointer to our data, returns via X0
     ;sub sp, sp, #16 
     push lr                     ; put the link register onto the stack
     push X1                     ; push the pointer to the prompt, in order to properly have it when returning

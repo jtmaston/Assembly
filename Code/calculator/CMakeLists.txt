@@ -9,8 +9,10 @@ project(ASMCalc  VERSION "${PROJECT_VER}"
     LANGUAGES ASM
 )
 
+#SET(CMAKE_ASM_FLAGS  "${CMAKE_CASM_FLAGS} -static -nostdlib -e _main")
+
+
 add_executable(ASMCalc
     src/io.s src/main.s src/strlen.s
 )
-
 target_include_directories(ASMCalc PRIVATE src)
