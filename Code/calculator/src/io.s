@@ -1,28 +1,39 @@
-.global print
+.include "macros.s"
+
+.global print, read
 
 .align 4
 .text
 
-.macro write
-    mov X16, #4                 ; write
-    mov X0,  #1                 ; to stdin
-    svc 0    
-.endm
 
-.macro read                     ; NOTE: TODO
-    mov X16, #3                 ; read
-    mov X0,  #1                 ; from stdin
-    mov X2,  #8                 ; size of 4 bytes
+read:
+    push lr
+
+    getptr input
+    mov X1, X0
+
+    mov X16, #3                    ; read
+    mov X0,  #1                    ; from stdin
+    mov X2,  #128                  ; size of 4 bytes
     svc 0
-.endm
 
+    push X1
+    mov X1, #1
+    bl print
 
-print:
-    mov X1, #16
-    mul X0, X0, X1
-    ldr X1, [sp, X0]
+    pop lr
+    ret
 
-    bl strlen                 ; find the length of the string to be printed.
-
+print:                        ; uses X1, X0, X2, X9 ; needs X1 loaded with pointer to prompt
+    push lr                   ; find the length of the string to be printed.  
+    mov X9, #16
+    mul X1, X1, X9
+    ldr X1, [sp, X1]
+   
+    bl strlen
+    
     mov X2, X9
     write
+
+    pop lr
+    ret

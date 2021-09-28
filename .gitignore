@@ -11,3 +11,4 @@ decomp.s
 .vscode
 bin
 .DS_Store
+build
