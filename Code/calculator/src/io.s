@@ -1,6 +1,6 @@
-.include "macros.s"
+.include "macros/macros.s"
 
-.global print, input
+.global _print, input
 
 .align 4
 .text
@@ -20,17 +20,26 @@ input:                          ; takes X1 with the pointer to the string to be 
     mov X1, X0
     read
 
+    peek X1
+    bl strlen
+    
+    sub X0, X0, #1
+    peek X2
+    str WZR, [X2, X0]
+
     pop X0
     pop lr
     ret
 
-print:                         ; takes X1 as the memory "slot" from which a string to be printed.
-    push lr                    ; this is relative tot the sp of each function. Dont' go calling 
-    mov X9, #16                ; main's slots from a second function!
+_print:                         ; takes X1 as the memory "slot" from which a string to be printed.
+    push lr                     ; this is relative to the program's frame pointer
+    sub X1, X1, #1
+    mov X9, #-16
     mul X1, X1, X9
-    ldr X1, [sp, X1]
-   
-    bl strlen                  ; detects the length of a null-terminated string
+    sub X2, fp, #32
+    ldr X1, [X2, X1]
+                                
+    bl strlen                   ; detects the length of a null-terminated string
     
     mov X2, X0
     write

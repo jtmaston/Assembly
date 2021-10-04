@@ -1,20 +1,6 @@
-.macro getptr var
-    adrp X0, \var@PAGE         
-    add X0, X0, \var@PAGEOFF     ; load prompt_1 pointer into X1.
-.endm
-
-.macro push reg
-    sub sp, sp, #16             ; increase stack, keeping it aligned to 16 bytes
-    str \reg, [sp]                ; store the value there
-.endm
-
-.macro pop reg
-    ldr \reg, [sp]
-    add sp, sp, #16
-.endm
-
-.macro peek reg
-    ldr \reg, [sp]
+.macro print slot
+    mov X1, \slot                   ; select slot 1
+    bl _print                        ; print it
 .endm
 
 .macro write

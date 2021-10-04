@@ -1,4 +1,4 @@
-.include "macros.s"
+.include "macros/macros.s"
 
 .global strlen
 
