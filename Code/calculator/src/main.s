@@ -1,7 +1,7 @@
 // This example aims to make a small program to read user input and perform a simple addition.
 // Very WIP.
 // TODO:
-//   * Multiplcation and division
+//   * Division
 //   * Parantheses 
 //   * Negative numbers
 //   * General code cleanup
@@ -9,6 +9,7 @@
 //   * Printing ( I'm stubborn and actively refuse to use printf )
 //   * Input
 //   * Addition & substraction
+//   * Multiplcation
 
 
 .include "macros.s"
@@ -73,4 +74,4 @@ _test:
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    #input_string: .asciz "123*4"
+    //input_string: .asciz "123*4"

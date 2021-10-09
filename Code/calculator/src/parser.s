@@ -137,6 +137,7 @@ parse:
 
     pop X3                      // pop off the stack into X3. Push is wrapped in saveptr on line 129
     mov X10, X3
+    mov X0, X19
     bl bstr                     // build the string
 
     strb wzr, [X3], #1          // null-terminate it
