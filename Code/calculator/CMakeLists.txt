@@ -16,27 +16,10 @@ add_executable(ASMCalc
     src/io.s src/main.s src/strlen.s src/parser.s
 )
 
-#set_target_properties(ASMCalc
-#    PROPERTIES
-#        LINKER_LANGUAGE ASM
-#        LANGUAGE ASM
-#)
-target_include_directories(ASMCalc PUBLIC src)
-#
-#
-#add_executable(Tester
-#    src/tests/tester.cpp
-#)
-#
-#set_target_properties(Tester
-#    PROPERTIES
-#        LINKER_LANGUAGE CXX
-#        LANGUAGE CXX
-#)
-#
-#add_library(ASMCalcLib STATIC
-#    src/io.s src/main.s src/strlen.s src/parser.s
-#)
-#target_include_directories(ASMCalcLib PUBLIC src)
+if(APPLE)
+target_include_directories(ASMCalc PUBLIC src/macros/darwin)
+endif()
 
-#target_link_libraries(Tester PUBLIC ASMCalcLib)
+if(UNIX AND NOT APPLE)
+target_include_directories(ASMCalc PUBLIC src/macros/linux)
+endif()

@@ -11,7 +11,7 @@
 //   * Addition & substraction
 
 
-.include "macros/macros.s"
+.include "macros.s"
 .global _main, input_string, output
 
 .align 4
