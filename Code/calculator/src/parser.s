@@ -1,4 +1,4 @@
-.include "macros/macros.s"
+.include "macros.s"
 
 .align 4
 .text
@@ -128,17 +128,19 @@ parse:
     mov X2, X0                  // save X0, since it's trashed by saveptr
     saveptr output              // get the output pointer
     mov X0, X2                  // restore X0
-
+    mov X19, X0
     push X0                     // push the pointer onto the stack
     mov X2, #1                  // initialzie X2
     bl dcount                   // count the digits
-    pop X0                      // restore the pointer off the stack
+    pop X10                      // restore the pointer off the stack
+    
 
     pop X3                      // pop off the stack into X3. Push is wrapped in saveptr on line 129
+    mov X10, X3
     bl bstr                     // build the string
 
     strb wzr, [X3], #1          // null-terminate it
-
+    mov X0, X19
     pop lr                      // pop the link register
     ret                         // and return
 

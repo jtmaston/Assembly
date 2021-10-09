@@ -11,14 +11,15 @@
 //   * Addition & substraction
 
 
-.include "macros/macros.s"
-.global _main, input_string, output
+.include "macros.s"
+.global _enter, _test, input_string, output
 
 .align 4
 .text
 .arch armv8-a
 
-_main:
+_enter:
+
     saveptr prompt                  // << 
     saveptr cursor                  // save the pointers to the many prompts
     saveptr output                  //
@@ -35,11 +36,33 @@ loop:
 
     b loop                          // and go back to the beginning
 
-    mov sp, fp                      // restore the sp and fp
+    mov sp, fp                      // restore the sp to fp
 
     mov X0, #0                      // set exit code 0
     mov X16, #1                     // set SYS_EXIT
     svc 0                           // execute 
+
+
+_test:
+    push fp
+    mov fp, sp
+
+    push lr
+    mov X2, X0
+    saveptr output
+    push X2
+
+    bl parse
+
+    pop X1
+    pop X1
+
+    pop lr
+
+    pop fp
+
+    ret
+    
 
 .bss
 .align 16
@@ -50,5 +73,4 @@ loop:
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    newline: .asciz ""
     #input_string: .asciz "123*4"

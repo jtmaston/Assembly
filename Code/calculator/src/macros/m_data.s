@@ -9,3 +9,9 @@
     getptr \var
     push X0
 .endm
+
+.macro getval var
+    adrp X0, \var@PAGE
+    add X0, X0, \var@PAGEOFF
+    mov X0, [X0]
+.endm

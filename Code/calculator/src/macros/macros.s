@@ -1,3 +1,3 @@
-.include "macros/m_data.s"
-.include "macros/m_io.s"
-.include "macros/m_stack.s"
+.include "m_data.s"
+.include "m_io.s"
+.include "m_stack.s"
