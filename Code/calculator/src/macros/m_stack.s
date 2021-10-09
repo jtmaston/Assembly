@@ -1,6 +1,6 @@
 .macro push reg
-    sub sp, sp, #16               ; increase stack, keeping it aligned to 16 bytes
-    str \reg, [sp]                ; store the value there
+    sub sp, sp, #16               // increase stack, keeping it aligned to 16 bytes
+    str \reg, [sp]                // store the value there
 .endm
 
 .macro pop reg
