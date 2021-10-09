@@ -66,8 +66,8 @@ _oper:                          ; called when an operator has been found
 _step:
     ldrb W13, [X1], #1          ; read one char from X1, then increment the pointer
 
-    sub X14, X13, #42           ; check if char code is greater than 42
-    add X15, X13, #-47          ; but smaller than 47
+    sub X14, X13, #41           ; check if char code is greater or equal to 42
+    add X15, X13, #-48          ; but smaller or equal to 48
                                 ; this means that it is an operator ( 42 is '*', 47 is '/' etc. see ascii table)
     mul X14, X14, X15           ; multiply the two calculations. if the result is smaller than 0, the char is an operator
 
@@ -109,7 +109,7 @@ bstr:                           ; BuildSTRing, builds the output string y taking
     strb W4, [X3], #1           ; and store that byte
 
     
-    cmp X0, 0                   ; stop when the number is 0
+    cmp X2, 0                   ; stop when the number is 0
     b.eq done
     b.ne bstr
 

@@ -43,10 +43,11 @@ loop:
 .bss
 .align 16
     input_string: .skip 101         ; reserve max 100 bytes
-    output: .skip 30
+    output: .skip 10000
 
 .data
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
     newline: .asciz ""
+    #input_string: .asciz "123*4"
