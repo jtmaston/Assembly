@@ -15,7 +15,6 @@ SET(CMAKE_ASM_FLAGS  "${CMAKE_CASM_FLAGS} -g -e _enter")
 add_executable(ASMCalc
     src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s
 )
-target_include_directories(ASMCalc PUBLIC src/macros)
 
 add_executable(Tester 
     Tests/test.c
@@ -29,6 +28,12 @@ add_executable(Tester
 add_library(ASMCalcLib STATIC
     src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s
 )
-target_include_directories(ASMCalcLib PUBLIC src/macros)
 
 target_link_libraries(Tester ASMCalcLib)
+if(APPLE)
+target_include_directories(ASMCalc PUBLIC src/macros/darwin)
+endif()
+
+if(UNIX AND NOT APPLE)
+target_include_directories(ASMCalc PUBLIC src/macros/linux)
+endif()
