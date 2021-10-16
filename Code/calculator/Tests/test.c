@@ -3,10 +3,13 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <float.h>
 
-extern int test(char *expression);
+extern char* calculate(char *expression);
 
 char test_s[1000] = "";
+
+FILE* report;
 
 void run_test(int testnum, int *failed)
 {
@@ -20,29 +23,58 @@ void run_test(int testnum, int *failed)
         testnum = abs (rand() % 4);
     }
 
-    int validator;
+    double validator;
 
     switch (testnum)
     {
     case 0:
-        validator = a + b;
+        validator = (double)a + (double)b;
         sprintf(test_s, "%d+%d", a, b);
         break;
     case 1:
-        validator = a - b;
+        if ( a < b ){
+            int aux = a;
+            a = b;
+            b = aux;
+        }
+        validator = (double)a - (double)b;
         sprintf(test_s, "%d-%d", a, b);
         break;
     case 2:
-        validator = a * b;
+        validator = (double)a * (double)b;
         sprintf(test_s, "%d*%d", a, b);
         break;
     case 3:
-        validator = a / b;
+        validator = (double)a / (double)b;
         sprintf(test_s, "%d/%d", a, b);
         break;
     }
-    int tested_value = test(test_s);
-    *failed = !(tested_value == validator);
+    char* tested_value = calculate(test_s);
+    char* pend;
+    double k = strtod(tested_value, &pend);
+
+    //k = floor(k * 10000);
+    //validator = floor(validator * 10000);
+
+    //printf("\n%f\n", k - validator);
+
+    *failed = !( fabs( validator - k ) <= 0.000001 );
+
+    char diagnostic[10];
+
+    if(*failed){
+        printf("%f", k);
+        printf(" %f\n", validator);
+    }
+    
+
+    if(*failed)
+        strcpy(diagnostic, "FAIL");
+    else
+        strcpy(diagnostic, "PASS");
+
+    
+    fprintf(report, "Tested %s, got %f, expected %f, result is %s \n", test_s, k, validator, diagnostic);
 }
 
 int main(int argc, char *argv[])
@@ -50,6 +82,9 @@ int main(int argc, char *argv[])
 
     srand(time(NULL));
     printf("Commencing tests... \n\n");
+
+    printf("Opening report file...\n");
+    report = fopen("report.txt", "w+");
 
     float coverage = 0.0f;
 
@@ -65,7 +100,7 @@ int main(int argc, char *argv[])
             case 4: printf("Testing negatives..."); break;
         }
 
-        for (int test = 0; test < 1 && !failed; test++)
+        for (int test = 0; test < 10000 && !failed; test++)
         {
             run_test(op, &failed);
         }
@@ -84,5 +119,6 @@ int main(int argc, char *argv[])
     coverage *= 100;
     coverage = floor(coverage);
     printf("\nCoverage: %f %%\n" ,coverage);
+    fclose(report);
     return 0;
 }

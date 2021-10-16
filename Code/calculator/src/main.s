@@ -13,7 +13,7 @@
 
 
 .include "macros.s"
-.global _enter, _test, input_string, output
+.global _enter, _calculate, input_string, output
 
 .align 4
 .text
@@ -44,7 +44,7 @@ loop:
     svc 0                           // execute 
 
 
-_test:
+_calculate:                         // wrapper in order to be used as a C function
     push fp
     mov fp, sp
 
@@ -58,9 +58,12 @@ _test:
     pop X1
     pop X1
 
-    pop lr
+    
 
+    pop lr
     pop fp
+    
+    getptr output
 
     ret
     
@@ -74,4 +77,4 @@ _test:
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    //input_string: .asciz "123*4"
+    //input_string: .asciz "7629116/7427815"

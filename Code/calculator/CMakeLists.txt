@@ -13,7 +13,7 @@ SET(CMAKE_ASM_FLAGS  "${CMAKE_CASM_FLAGS} -g -e _enter")
 
 
 add_executable(ASMCalc
-    src/io.s src/main.s src/strlen.s src/parser.s
+    src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s
 )
 target_include_directories(ASMCalc PUBLIC src/macros)
 
@@ -27,7 +27,7 @@ add_executable(Tester
 #)
 
 add_library(ASMCalcLib STATIC
-    src/io.s src/main.s src/strlen.s src/parser.s
+    src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s
 )
 target_include_directories(ASMCalcLib PUBLIC src/macros)
 

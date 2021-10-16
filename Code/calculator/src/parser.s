@@ -13,14 +13,37 @@ _sub:                           // substract numbers
     ret
 
 _mul:                           // multiply em
-    mul X0, X21, X22            // TODO:
+    mul X0, X21, X22
     ret
 
 _div:
-    scvtf s21, X21              // divide em. Technically, this should use the
-    scvtf s22, X22              // floating point registers and set the
+    //ldr d21, [X21]
+    //ldr d22, [X22]
 
-    fdiv s0, s22, s21           // floating flag correctly
+    scvtf D0, X21           // 2.875-2.0 0.875
+    scvtf D1, X22
+
+    fdiv D0, D0, D1           // divide
+
+    // now we must extract the parts of the float as integers
+    fcvtmu X3, D0               // round down, to get integer part
+    scvtf D1, X3                // move up to float, to substract from value
+
+    lsl X0, X3, #32             // shift the integer value left by 32 bits
+
+
+    fsub D0, D0, D1             // remove the integer part
+
+    mov X3, #1000                  // 6 digit precision
+    mul X3, X3, X3
+
+    scvtf D3, X3                // move up to float
+
+    fmul D0, D0, D3 
+    fcvtmu X1, D0
+
+    add X0, X0, X1
+
     mov X24, #1                 // TODO:
     ret
 
@@ -66,6 +89,9 @@ _oper:                          // called when an operator has been found
 _step:
     ldrb W13, [X1], #1          // read one char from X1, then increment the pointer
 
+    cmp W13, #32                // skip whitespace
+    b.eq _step 
+
     sub X14, X13, #41           // check if char code is greater or equal to 42
     add X15, X13, #-48          // but smaller or equal to 48
                                 // this means that it is an operator ( 42 is '*', 47 is '/' etc. see ascii table)
@@ -83,35 +109,7 @@ cont:                           // continue label
     bne _step                   // else continue
 
 
-dcount:                         // count digits by dividing the number by 10
-    cmp X0, #0                  // compare to '\0'
-    b.eq done                   // stop
-    
-    mov X1, #10                 // auxiliary register to be able to multiply
-    
-    mul X2, X2, X1              // and then multiply it
-    udiv X0, X0, X1             // then divide the result by it
-    b dcount
 
-done:
-    udiv X2, X2, X1             // we're interested in a power of ten smaller than the number
-    ret                         // so divide by 10 again
-
-bstr:                           // BuildSTRing, builds the output string y taking the digits 
-    udiv X4, X0, X2             // converting to chars and putting them into the buffer
-    mul X5, X4, X2              
-    sub X0, X0, X5              // remove the top digit
-
-    mov X1, #10                 // move 10 into X1
-    udiv X2, X2, X1             // then divide X2 with it
-
-    add X4, X4, #48             // turn into char by means of adding '0'
-    strb W4, [X3], #1           // and store that byte
-
-    
-    cmp X2, 0                   // stop when the number is 0
-    b.eq done
-    b.ne bstr
 
 parse: 
     peek X1                     // X21, X22 store the operands
@@ -119,6 +117,7 @@ parse:
     mov X24, #0                 // X24 stores a flag that signifies "we need a float register"
                                 // X23 is the operator register
     mov X25, #0                 // X25 designates if digits are assigned to the first number or the second one
+    mov X26, #0                 // X26 designates if the number is a negative one or not
     
     mov X21, #0                 // initialize the operands. Not needed but redundancy is good.
     mov X22, #0
@@ -129,16 +128,14 @@ parse:
     saveptr output              // get the output pointer
     mov X0, X2                  // restore X0
     mov X19, X0
-    push X0                     // push the pointer onto the stack
-    mov X2, #1                  // initialzie X2
-    bl dcount                   // count the digits
-    pop X10                      // restore the pointer off the stack
+    
     
 
     pop X3                      // pop off the stack into X3. Push is wrapped in saveptr on line 129
     mov X10, X3
     mov X0, X19
-    bl bstr                     // build the string
+
+    bl build
 
     strb wzr, [X3], #1          // null-terminate it
     mov X0, X19
