@@ -17,3 +17,16 @@
     mov X2,  #101                  // up to 101 bytes ( to account for newline )
     svc 0
 .endm
+
+.macro clear
+    mov X19, #0
+    mov X20, #0
+    mov X21, #0
+    mov X22, #0
+    mov X23, #0
+    mov X24, #0
+    mov X25, #0
+    mov X26, #0
+    mov X27, #0
+    mov X28, #0
+.endm

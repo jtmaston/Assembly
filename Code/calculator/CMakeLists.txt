@@ -10,10 +10,11 @@ set(CMAKE_OSX_ARCHITECTURES "arm64")
 
 
 add_executable(ASMCalc
-    src/main.s src/io.s src/strlen.s src/parser.s src/string_builder.s
+    src/main.s src/io.s src/strlen.s src/parser.s src/string_builder.s src/string_builder_neo.s
 )
 
 set_target_properties(ASMCalc PROPERTIES LINK_FLAGS "-e _enter")
+set_target_properties(ASMCalc PROPERTIES ASM_FLAGS "-g")
 
 add_executable(Tester 
     Tests/test.c
@@ -24,7 +25,7 @@ set_target_properties(Tester
 )
 
 add_library(ASMCalcLib STATIC
-    src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s 
+    src/io.s src/main.s src/strlen.s src/parser.s src/string_builder.s src/string_builder_neo.s
 )
 
 target_link_libraries(Tester ASMCalcLib)

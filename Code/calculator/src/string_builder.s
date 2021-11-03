@@ -1,16 +1,19 @@
+//TODO: this file is deprecated and will be removed next commit
+
+
 .include "macros.s"
 
 .align 4
 .text
 
-.global bstr, build
+.global build
 
 done:
     udiv X2, X2, X1             // we're interested in a power of ten smaller than the number
     ret                         // so divide by 10 again
 
 dcount:                         // count digits by dividing the number by 10
-    cmp X0, #0                  // compare to '\0'
+    cmp X0, #0                  // compare to '\0'   FIXME: wtf?
     b.eq done                   // stop
     
     mov X1, #10                 // auxiliary register to be able to multiply
@@ -18,10 +21,6 @@ dcount:                         // count digits by dividing the number by 10
     mul X2, X2, X1              // and then multiply it
     udiv X0, X0, X1             // then divide the result by it
     b dcount
-
-bstr:                           // BuildSTRing, builds the output string y taking the digits 
-    cmp X24, #1
-    b.eq bstf
 
 run:
 
@@ -43,11 +42,6 @@ run:
 build:
     push lr
 
-    push X0                     // push the pointer onto the stack
-    mov X2, #1                  // initialzie X2
-    bl dcount                   // count the digits
-    pop X0                      // restore the pointer off the stack
-
     bl bstr                     // build the string
 
     pop lr
@@ -65,7 +59,7 @@ zero:
     mov X30, X14
     ret
 
-bstf:
+bstr:
     push lr
     mov W25, W0
     lsr X0, X0, #32
@@ -91,14 +85,10 @@ bstf:
     mul X13, X13, X13
 
     udiv X13, X13, X2
-    cmp X13, #10
+    cmp X13, #0
     adr X14, .
     add X14, X14, #12
     b.ne zero
-    
-
-    //mov X2, #1000                 // set 6 digit precision
-    //mul X2, X2, X2
 
     bl run
 
