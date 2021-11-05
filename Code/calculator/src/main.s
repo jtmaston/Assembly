@@ -38,11 +38,7 @@ loop:
     b loop                          // and go back to the beginning
 
     mov sp, fp                      // restore the sp to fp
-
-    mov X0, #0                      // set exit code 0
-    mov X16, #1                     // set SYS_EXIT
-    svc 0                           // execute 
-
+    exit
 
 _calculate:                         // wrapper in order to be used as a C function
     push fp

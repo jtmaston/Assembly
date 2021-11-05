@@ -30,3 +30,9 @@
     mov X27, #0
     mov X28, #0
 .endm
+
+.macro exit
+    mov X0, #0                      // set exit code 0
+    mov X16, #1                     // set SYS_EXIT
+    svc 0                           // execute 
+.endm

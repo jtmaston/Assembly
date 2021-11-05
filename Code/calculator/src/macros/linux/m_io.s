@@ -4,7 +4,7 @@
 .endm
 
 .macro write
-    mov X16, #4                 // write
+    mov X8, #64                 // write
     mov X0,  #1                 // to stdin
     svc 0    
 .endm
@@ -29,4 +29,7 @@
     mov X26, #0
     mov X27, #0
     mov X28, #0
+.endm
+
+.macro exit
 .endm
