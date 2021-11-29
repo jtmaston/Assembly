@@ -72,4 +72,4 @@ _calculate:                         // wrapper in order to be used as a C functi
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    //input_string: .asciz "5/2"
+    //input_string: .asciz "424064/5038929"

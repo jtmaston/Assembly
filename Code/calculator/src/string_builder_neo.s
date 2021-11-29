@@ -39,6 +39,7 @@ trim:                           // trims the trailing zeroes of decimals
     b retrim
 
     trimmed:                    // and end
+        mov X0, X3              // and return the value to what it's supposed to be
         pop lr
         ret
 
@@ -71,6 +72,8 @@ cvrt:                           // convert
 
 
 
+
+
 build_neo:
     mov X26, X0                 // move the output pointer into X26, to be used later
     push lr
@@ -90,6 +93,22 @@ build_neo:
 
     mov W4, #46                 // if we do, let's add the decimal point
     strb W4, [X26], #1
+
+    mov X28, X0
+    bl count
+    cmp X0, #6                  // check if we have 6 decimals
+    b.eq no_prefix              // and if we do, skip the prefixing part
+
+    sub X2, X0, #6
+    
+    prefix:
+        mov W4, #48
+        strb W4, [X26], #1
+        add X2, X2, #1
+        cmp X2, #0
+        b.ne prefix
+    
+    no_prefix:
 
     mov X0, X28                 // move the decimal points into x0
     bl trim                     // remove trailing zeroes

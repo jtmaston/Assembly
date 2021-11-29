@@ -53,11 +53,6 @@ void run_test(int testnum, int *failed)
     char* pend;
     double k = strtod(tested_value, &pend);
 
-    //k = floor(k * 10000);
-    //validator = floor(validator * 10000);
-
-    //printf("\n%f\n", k - validator);
-
     *failed = !( fabs( validator - k ) <= 0.000001 );
 
     char diagnostic[10];
