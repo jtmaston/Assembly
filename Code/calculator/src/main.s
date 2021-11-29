@@ -1,15 +1,15 @@
 // This example aims to make a small program to read user input and perform a simple addition.
 // Very WIP.
 // TODO:
-//   * Division
 //   * Parantheses 
-//   * Negative numbers
 //   * General code cleanup
 // Done:
 //   * Printing ( I'm stubborn and actively refuse to use printf )
 //   * Input
 //   * Addition & substraction
 //   * Multiplcation
+//   * Division
+//   * Negative numbers
 
 
 .include "macros.s"
@@ -35,32 +35,34 @@ loop:
     bl parse                        // once returned from input, parse it
     print #3                        // print the result
 
-    b loop                          // and go back to the beginning
+    cmp X3, #1
+    b.eq loop                       // and go back to the beginning
 
     mov sp, fp                      // restore the sp to fp
     exit
 
 _calculate:                         // wrapper in order to be used as a C function
-    push fp
-    mov fp, sp
+    regsave                         // save the callee-saved regs
 
+    push fp                         // save the frame pointer
+    mov fp, sp                      
     push lr
+
     mov X2, X0
     saveptr output
     push X2
 
-    bl parse
+    bl parse                        // parse the input
 
-    pop X1
-    pop X1
-
-
-    pop lr
+    pop X1                          // remove the output pointer
+    pop X1                          // remove X2 
+    
+    pop lr                          // prepare to return
     pop fp
     
-    getptr output
-
-    ret
+    regres                          // restore the saved registers
+    getptr output                   // get the output pointer
+    ret                             // and return
     
 
 .bss
@@ -72,4 +74,4 @@ _calculate:                         // wrapper in order to be used as a C functi
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    //input_string: .asciz "424064/5038929"
+    //input_string: .asciz "3+3"            // NOTE: whitespace broken.

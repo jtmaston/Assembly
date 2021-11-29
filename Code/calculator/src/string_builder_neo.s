@@ -77,6 +77,14 @@ cvrt:                           // convert
 build_neo:
     mov X26, X0                 // move the output pointer into X26, to be used later
     push lr
+
+    cmp X16, #-1
+    b.ne signskip
+    mov W4, #45                 // if we do, let's add the decimal point
+    strb W4, [X26], #1
+
+    signskip:
+        
     mov X0, X27                 // count the digits of the integer part
     bl count
 

@@ -25,6 +25,7 @@ void run_test(int testnum, int *failed)
 
     double validator;
 
+
     switch (testnum)
     {
     case 0:

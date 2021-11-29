@@ -21,7 +21,19 @@ _div:
     ret
 
 _split:
-    fcvtmu X27, D0               // get the integer part by truncating
+    mov X16, #1
+    scvtf D2, XZR
+    fcmp D0, D2
+    b.pl skip
+
+    mov X16, #-1
+    mov X2, #-1
+    scvtf D2, X2
+    fmul D0, D0, D2
+
+    skip: 
+
+    fcvtms X27, D0               // get the integer part by truncating
     scvtf D1, X27                // then turn it into a .0000 float, to be able to do floating ops
 
     fsub D0, D0, D1             // remove the integer part of the number
@@ -31,7 +43,7 @@ _split:
     scvtf D3, X3                // upcast to float, to be able to use it in ops
 
     fmul D0, D0, D3             // and finally, get the first 6 decimals of our number
-    fcvtmu X28, D0              // then downcast back to integer
+    fcvtms X28, D0              // then downcast back to integer
 
     // for a number such as xyz.abcdefg, it should be stored
     //      X27        |           X28
@@ -41,6 +53,7 @@ _split:
 
 
 _stop:                          // called when numbers have been formed
+    mul X22, X22, X16
     scvtf D0, X21
     scvtf D1, X22
 
@@ -77,10 +90,20 @@ _ads:                           // add digit to second number
     add X22, X22, X10
     b cont
 
-_oper:                          // called when an operator has been found
-    mov W27, W13                // save the operator
-    mov X25, #1                 // set the operator found flag
-    b cont                      // and move on
+_oper:
+    mul X21, X21, X16       // multiply the first number with the sign ( either - or + )
+    mov X16, #1             // set sign as positive
+
+    ldrb W14, [X1]
+    cmp W14, #45
+    b.ne nosig
+    mov X16, #-1
+    ldrb W14, [X1], #1
+
+    nosig:                  // no sign follows the current operator
+    mov X25, #1             // set the operator found flag
+    mov W27, W13            // save the operator
+    b cont                  // and move on
 
 _step:
     ldrb W13, [X1], #1          // read one char from X1, then increment the pointer
@@ -109,6 +132,21 @@ parse:
     
     clear
 
+    ldrb W13, [X1]              // read first character, to check if it is '-'
+    cmp W13, #45
+    mov X16, #1
+    b.ne notneg
+        mov X16, #-1            // set the appropriate negative flag
+        ldrb W13, [X1], #1      // and increment the ptr    
+    notneg:
+
+    cmp W13, #113               // check for 'q' escape character
+    b.ne work
+        mov X3, #0
+        pop lr                      // pop the link register
+        ret  
+    work:
+        
     bl _step                    // start the actual parsing process
     bl _split
 
@@ -118,7 +156,8 @@ parse:
 
     getptr output
     strb wzr, [X26], #1          // null-terminate it
-    //mov X0, X1
+    
+    mov X3, #1
     pop lr                      // pop the link register
     ret                         // and return
 
