@@ -5,7 +5,13 @@
 #include <math.h>
 #include <float.h>
 
+
+#ifndef __APPLE__
+extern char* _calculate(char *expression);
+#define calculate _calculate
+#else
 extern char* calculate(char *expression);
+#endif
 
 char test_s[1000] = "";
 
@@ -15,7 +21,7 @@ void run_test(int testnum, int *failed)
 {
     
     int a = rand() % 10000000;
-    int b = rand() % 10000000;
+    int b = rand() % 23125987;
 
     if(testnum == 4){
         a = abs(a) * -1;
