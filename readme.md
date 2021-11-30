@@ -1,11 +1,11 @@
-# Assembly practice
+# ASMCalc
 
 ## What's this?
 
-Just a place I use to store the sources for the stuff I learn assembly with.
+A WIP calculator app, designed as a learning project to implement parsing, math operations etc in AARCH64 assembly.
 
 ## Can I use this?
-Of course! Not that there's much use to these. They target ARM64 on MacOS, so syscalls are set appropriately.
+Of course! This is supposed to run on MacOS and Linux. Windows is not supported at the time ( who even uses windows on arm? )
 
 ## Will this break my computer?
-Most likely.
+Maybe, maybe not. I've tested the code on MacOS and Ubuntu ARM, and it seems stable, however, as I'm a beginner, no guarantees can be made
