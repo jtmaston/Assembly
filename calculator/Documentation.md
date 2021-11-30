@@ -1,6 +1,10 @@
 # ASMCalc
 
-## General architecture
+# Coming Soon™
+
+## Old documentation ( for archiving purposes ):
+
+### General architecture
 * ASMCalc is spread out amongst a few files. These are: 
     * main.s: contains the main program
     * strlen.s: contains an own implementation of the strlen function

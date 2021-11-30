@@ -1,0 +1,2 @@
+# What's this folder about?
+These are a small group of programs I did as learning practice. They document the things I've tried, tested and stuff. Beyond seeing how I learned things, I wouldn't bother with the files here. Everything was used in the main calculator source
