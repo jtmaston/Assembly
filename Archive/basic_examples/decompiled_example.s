@@ -43,12 +43,12 @@ _main:
     Associated c program:
         int main()
         {
-            int a = 32;
-            int b = 42;
+            int a = 32//
+            int b = 42//
 
-            a = a + b;
+            a = a + b//
 
-            return 0;
+            return 0//
         }
 
  */
