@@ -13,7 +13,7 @@
 
 
 
-.global _enter, calculate, input_string, output
+.global _enter, _calculate, input_string, output
 
 .align 4
 .text
@@ -42,7 +42,7 @@ loop:
     mov sp, fp                      // restore the sp to fp
     exit
 
-calculate:                         // wrapper in order to be used as a C function
+_calculate:                         // wrapper in order to be used as a C function
     regsave                         // save the callee-saved regs
 
     push fp                         // save the frame pointer
