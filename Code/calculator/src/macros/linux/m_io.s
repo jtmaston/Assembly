@@ -12,9 +12,9 @@
 
 .macro read
     add X1, X1, X2                 // set offset to be read from.
-    mov X16, #3                    // read
-    mov X0,  #1                    // from stdin
-    mov X2,  #101                  // up to 101 bytes ( to account for newline )
+    mov X8, #63                     // read
+    mov X0, #1                     // from stdin
+    mov X2, #101                   // up to 101 bytes ( to account for newline )
     svc 0
 .endm
 
@@ -32,4 +32,7 @@
 .endm
 
 .macro exit
+    mov x8, #0x5d
+    mov x0, #0x0
+    svc 0
 .endm

@@ -12,15 +12,16 @@
 //   * Negative numbers
 
 
-.include "macros.s"
-.global _enter, _calculate, input_string, output
+
+.global _enter, calculate, input_string, output
 
 .align 4
 .text
 .arch armv8-a
 
+.include "macros.s"
 _enter:
-
+    add fp, sp, #320
     saveptr prompt                  // << 
     saveptr cursor                  // save the pointers to the many prompts
     saveptr output                  //
@@ -33,7 +34,7 @@ loop:
     str XZR, [X0]                   // also initialize input_string with 0
     bl input                        // branch to the input function
     bl parse                        // once returned from input, parse it
-    print #3                        // print the result
+    print #3                        // print dthe result
 
     cmp X3, #1
     b.eq loop                       // and go back to the beginning
@@ -41,7 +42,7 @@ loop:
     mov sp, fp                      // restore the sp to fp
     exit
 
-_calculate:                         // wrapper in order to be used as a C function
+calculate:                         // wrapper in order to be used as a C function
     regsave                         // save the callee-saved regs
 
     push fp                         // save the frame pointer

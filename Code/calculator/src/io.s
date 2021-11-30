@@ -34,7 +34,7 @@ _print:                         // takes X1 as the memory "slot" from which a st
     //sub X1, X1, #1              // because slots *technically* start from 0, substract 1 from the slot num
     mov X9, #-16                // slots are in 16-bytes offsets
     mul X1, X1, X9              // so get the actual offset from the slot 
-    sub X2, fp, 0x140             // substract 32 from the fp, since that's where sp is at the beginnin of the prog
+    sub X2, fp, 0x140           // substract 32 from the fp, since that's where sp is at the beginnin of the prog
     ldr X1, [X2, X1]            // load the pointer from the slot
                                 
     bl strlen                   // detects the length of a null-terminated string

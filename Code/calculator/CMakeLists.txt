@@ -6,14 +6,14 @@ project(Assembly
 )
 
 set(PROJECT_VER "0.0.1")
-set(CMAKE_OSX_ARCHITECTURES "arm64")
+set(CMAKE_OSX_ARCHITECTURES "aarch64")
 
 
 add_executable(ASMCalc
     src/main.s src/io.s src/strlen.s src/parser.s src/string_builder_neo.s
 )
 
-set_target_properties(ASMCalc PROPERTIES LINK_FLAGS "-e _enter")
+set_target_properties(ASMCalc PROPERTIES LINK_FLAGS "-e _enter -nostdlib")
 set_target_properties(ASMCalc PROPERTIES ASM_FLAGS "-g")
 
 add_executable(Tester 
