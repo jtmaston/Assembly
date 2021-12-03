@@ -33,6 +33,9 @@ loop:
     peek X0                         // get the address of input_string into X9
     str XZR, [X0]                   // also initialize input_string with 0
     bl input                        // branch to the input function
+
+    bl preprocess
+
     bl parse                        // once returned from input, parse it
     print #3                        // print dthe result
 
@@ -75,4 +78,4 @@ _calculate:                         // wrapper in order to be used as a C functi
 .align 16
     prompt: .asciz "Welcome! \nThis is a simple calculator. Input your equation and it will solve it. \nEnjoy!"
     cursor: .asciz "\n> "
-    //input_string: .asciz "3+3"            // NOTE: whitespace broken.
+    //input_string: .asciz "9 * 2"            // NOTE: whitespace broken.
